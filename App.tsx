@@ -5,6 +5,7 @@ import {
   Ubuntu_400Regular 
 } from '@expo-google-fonts/ubuntu';
 import Home from '@/app/home';
+import Loading from '@/components/loading';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,7 +15,7 @@ export default function App() {
   })
 
   if(!fontsLoaded){
-    return;
+    return <Loading />
   }
   return (
    <Home />
