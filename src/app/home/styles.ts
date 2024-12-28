@@ -12,5 +12,9 @@ export const styles = StyleSheet.create({
     height: 132,
     backgroundColor: colors.blue,
     justifyContent: "flex-end",
+    paddingHorizontal: 24
+  },
+  search: {
+    marginBottom: -27
   }
 })

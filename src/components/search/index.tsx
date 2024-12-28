@@ -5,16 +5,16 @@ import { theme } from '@/theme';
 
 const colors =  theme.colors;
 
-function Search({children}: ViewProps) {
+function Search({children, style}: ViewProps) {
   return (
-    <View style={styles.container}>
+    <View style={[style, styles.container]}>
       {children}
     </View>
   )
 }
 
 function Field({ ...rest }: TextInputProps) {
-  return <TextInput placeholderTextColor={colors.gray_300} {...rest}/>
+  return <TextInput style={styles.input} placeholderTextColor={colors.gray_300} {...rest}/>
 }
 
 Search.Field = Field;
