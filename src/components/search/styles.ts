@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     color: colors.black,
     fontSize: 16,
+    borderColor: colors.black,
+    padding: 0,
     fontFamily:fontFamily.regular
   }
 })
