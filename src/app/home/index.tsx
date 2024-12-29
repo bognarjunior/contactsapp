@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Alert, SectionList, Text } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import * as Contacts from 'expo-contacts';
 
@@ -8,21 +8,48 @@ import { styles } from './styles';
 import { theme } from '@/theme';
 
 import { Search } from '@/components/search';
-import Contact from '@/components/contact';
+import Contact, { ContactProps } from '@/components/contact';
+
+type SectionListDataProps = {
+  title: string,
+  data: ContactProps[]
+}
 
 export default function Home() {
-  const colors =  theme.colors;
-  const [contacts, setContacts] = useState([]);
   const [name, setName] = useState("");
-
+  const [contacts, setContacts] = useState<SectionListDataProps[]>([]);
+  
+  const colors =  theme.colors;
 
   async function fetchContacts() {
     try {
       const { status } = await Contacts.requestPermissionsAsync();
 
       if(status === Contacts.PermissionStatus.GRANTED) {
-        const { data } = await Contacts.getContactsAsync();
-        console.log(data);
+
+        const { data } = await Contacts.getContactsAsync({
+          name,
+          sort: 'firstName'
+        });
+
+        const list = data.map(( contact ) => ({
+          id: contact.id ?? useId(),
+          name: contact.name,
+          image: contact.image
+        })).reduce<SectionListDataProps[]>((acc: any, item) => {
+          const firstLetter = item.name.charAt(0).toUpperCase();
+          const existingEntry = acc.find((entry: SectionListDataProps) => entry.title === firstLetter);
+
+          if(existingEntry) {
+            existingEntry.data.push(item)
+          } else {
+            acc.push({ title: firstLetter, data: [item] })
+          }
+
+          return acc;
+        }, []);
+
+        setContacts(list);
       }
     } catch (error) {
       console.error(error);
@@ -32,7 +59,7 @@ export default function Home() {
   
   useEffect(() => {
     fetchContacts()
-  })
+  }, [name])
 
   return (
     <View style={styles.container}>
@@ -46,21 +73,18 @@ export default function Home() {
         </Search>
       </View>
 
-      
-
       <SectionList
         sections={contacts} 
         keyExtractor={(item) => item.id}
-        renderItem={() => {
+        renderItem={({item}) => {
           return (
-            <Contact contact={{
-              name: "Bognar",
-              image: require("@/assets/bognar.jpeg")
-            }}/>
+            <Contact contact={item}/>
           );
         }}
         renderSectionHeader={({section}) => <Text style={styles.section} >{section.title}</Text>}
         contentContainerStyle={styles.contentList}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>
   )

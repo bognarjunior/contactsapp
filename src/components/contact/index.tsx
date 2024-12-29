@@ -4,6 +4,7 @@ import { styles } from './styles'
 import Avatar from '@/components/avatar'
 
 export type ContactProps = {
+  id: string,
   name: string,
   image?: ImageProps
 }
@@ -15,7 +16,7 @@ type Props = TouchableOpacityProps & {
 export default function Contact({ contact, ...rest}: Props) {
   return (
     <TouchableOpacity style={styles.container} {...rest}>
-      <Avatar name='Bognar' image={contact.image} />
+      <Avatar name={contact.name} image={contact.image} />
       <Text style={styles.name}>{contact.name}</Text>
     </TouchableOpacity>
   )

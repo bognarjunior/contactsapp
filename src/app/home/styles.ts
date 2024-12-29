@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     justifyContent: "flex-end",
     paddingHorizontal: 24,
+    zIndex: 1
   },
   search: {
     marginBottom: -27
@@ -27,11 +28,18 @@ export const styles = StyleSheet.create({
     color: colors.white,
     textAlign: "center",
     textAlignVertical: "center",
+    borderRadius: 12,
     marginTop: 32
   },
   contentList: {
     padding: 24,
     gap: 12,
     paddingTop: 64
+  },
+  separator: {
+    width: "100%",
+    height: 1,
+    backgroundColor: colors.gray_400,
+    marginTop: 12
   }
 })
