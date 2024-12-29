@@ -20,7 +20,7 @@ const variants = {
       fontSize: 24,
     },
     large: {
-      fontSize: 32,
+      fontSize: 52,
     }
   }
 }
@@ -38,7 +38,7 @@ export default function Avatar({ image, name, variant = "medium" }: Props) {
         image ? (
           <Image source={image} style={variants.size[variant]}/>
         ) : (
-          <View style={styles.letter}>
+          <View style={[styles.letter,variants.size[variant]]}>
             <Text style={[styles.text, variants.text[variant]]}>{name[0].toUpperCase()}</Text>
           </View>
         )

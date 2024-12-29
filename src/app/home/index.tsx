@@ -21,7 +21,10 @@ export default function Home() {
         </TouchableOpacity>
       </Search>
       </View>
-      <Contact />
+      <Contact contact={{
+        name: "Bognar",
+        image: require("@/assets/bognar.jpeg")
+      }}/>
     </View>
   )
 }

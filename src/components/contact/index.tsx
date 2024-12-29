@@ -1,15 +1,22 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ImageProps, TouchableOpacityProps } from 'react-native'
 import React from 'react'
 import { styles } from './styles'
 import Avatar from '@/components/avatar'
 
-export default function Contact() {
+export type ContactProps = {
+  name: string,
+  image?: ImageProps
+}
+
+type Props = TouchableOpacityProps & {
+  contact: ContactProps
+}
+
+export default function Contact({ contact, ...rest}: Props) {
   return (
-    <View>
-      <TouchableOpacity>
-        <Avatar name='Bognar' image={require("@/assets/bognar.jpeg")} />
-        <Text style={styles.name}>Contact</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.container} {...rest}>
+      <Avatar name='Bognar' image={contact.image} />
+      <Text style={styles.name}>{contact.name}</Text>
+    </TouchableOpacity>
   )
 }
