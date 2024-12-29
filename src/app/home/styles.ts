@@ -1,7 +1,7 @@
 import { theme } from "@/theme";
 import { StyleSheet } from "react-native";
 
-const colors =  theme.colors;
+const { colors, fontFamily } =  theme;
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,9 +14,24 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     justifyContent: "flex-end",
     paddingHorizontal: 24,
-    marginBottom: 100
   },
   search: {
     marginBottom: -27
+  },
+  section: {
+    fontSize: 18,
+    fontFamily: fontFamily.bold,
+    backgroundColor: colors.blue,
+    width: 34,
+    height: 34,
+    color: colors.white,
+    textAlign: "center",
+    textAlignVertical: "center",
+    marginTop: 32
+  },
+  contentList: {
+    padding: 24,
+    gap: 12,
+    paddingTop: 64
   }
 })
