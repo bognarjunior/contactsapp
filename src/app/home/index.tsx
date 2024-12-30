@@ -1,14 +1,16 @@
 import { View, TouchableOpacity, Alert, SectionList, Text } from 'react-native';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import * as Contacts from 'expo-contacts';
-
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import { styles } from './styles';
 import { theme } from '@/theme';
 
 import { Search } from '@/components/search';
 import Contact, { ContactProps } from '@/components/contact';
+import Avatar from '@/components/avatar';
+import Button from '@/components/button';
 
 type SectionListDataProps = {
   title: string,
@@ -18,8 +20,20 @@ type SectionListDataProps = {
 export default function Home() {
   const [name, setName] = useState("");
   const [contacts, setContacts] = useState<SectionListDataProps[]>([]);
-  
+  const [contact, setContact] = useState<Contacts.Contact>();
+
   const colors =  theme.colors;
+  
+  const bottonSheetRef = useRef<BottomSheet>(null);
+
+  const handleBottonSheetOpen = () => bottonSheetRef.current?.expand();
+  const handleBottonSheetClose = () => bottonSheetRef.current?.snapToIndex(0);
+  
+  async function handleOpenDetails(id: string) {
+    const response = await Contacts.getContactByIdAsync(id);
+    setContact(response);
+    handleBottonSheetOpen()
+  }
 
   async function fetchContacts() {
     try {
@@ -50,6 +64,7 @@ export default function Home() {
         }, []);
 
         setContacts(list);
+        setContact(data[0]);
       }
     } catch (error) {
       console.error(error);
@@ -78,7 +93,10 @@ export default function Home() {
         keyExtractor={(item) => item.id}
         renderItem={({item}) => {
           return (
-            <Contact contact={item}/>
+            <Contact 
+              contact={item}
+              onPress={() => handleOpenDetails(item.id)}
+            />
           );
         }}
         renderSectionHeader={({section}) => <Text style={styles.section} >{section.title}</Text>}
@@ -86,6 +104,31 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
+
+      { contact &&
+        <BottomSheet
+          ref={bottonSheetRef}
+          snapPoints={[0.01, 284]} 
+          handleComponent={() => null}
+          backgroundStyle={styles.bottomSheet}
+        >
+          <Avatar name={contact.name} image={contact.image} variant='large' containerStyle={styles.image} />
+          <View style={styles.bottonSheetContent}>
+            <Text style={styles.contactName} >{contact.name}</Text>
+          
+            {
+              contact.phoneNumbers &&
+                <View style={styles.phoneNumber}>
+                  <Feather name='phone' size={18} color={colors.gray_400} />
+                  <Text style={styles.phone}>{contact.phoneNumbers[0].number}</Text>
+                </View>
+            }
+
+            <Button title='Fechar' onPress={handleBottonSheetClose} />
+          </View>
+        </BottomSheet>
+      }
+
     </View>
   )
 }

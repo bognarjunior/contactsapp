@@ -1,4 +1,4 @@
-import { Image, ImageProps, View, Text } from 'react-native'
+import { Image, ImageProps, View, Text, StyleProp, ViewStyle } from 'react-native'
 import React from 'react'
 import { styles } from './styles'
 
@@ -28,12 +28,13 @@ const variants = {
 type Props= {
   image?: ImageProps | null,
   name: string,
-  variant?: "medium" | "large"
+  variant?: "medium" | "large",
+  containerStyle?: StyleProp<ViewStyle>
 }
 
-export default function Avatar({ image, name, variant = "medium" }: Props) {
+export default function Avatar({ image, name, variant = "medium", containerStyle }: Props) {
   return (
-    <View>
+    <View style={containerStyle}>
       {
         image ? (
           <Image source={image} style={variants.size[variant]}/>

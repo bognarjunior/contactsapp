@@ -41,5 +41,37 @@ export const styles = StyleSheet.create({
     height: 1,
     backgroundColor: colors.gray_400,
     marginTop: 12
+  }, 
+  bottomSheet: {
+    backgroundColor: "transparent"
+  },
+  bottonSheetContent: {
+    flex: 1,
+    backgroundColor: colors.gray_100,
+    borderTopStartRadius: 32,
+    borderEndStartRadius: 32,
+    paddingTop: 64,
+    alignItems: "center",
+    padding: 32
+  },
+  image:{
+    marginBottom: -50,
+    zIndex: 1,
+    alignSelf: "center"
+  },
+  contactName: {
+    fontSize: 32,
+    fontFamily: fontFamily.bold,
+  },
+  phoneNumber: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    marginBottom: 24
+  },
+  phone: {
+    fontSize: 18,
+    fontFamily: fontFamily.medium,
+    color: colors.gray_400,
   }
 })
